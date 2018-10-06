@@ -1,6 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
 import ListView from './components/ListView';
+import NewItem from './components/NewItem';
+
+const RootStack = createStackNavigator(
+	{
+		Home: ListView,
+		NewItem: NewItem,
+	},
+	{
+		initialRouteName: 'Home',
+	}
+);
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -23,7 +36,7 @@ export default class App extends React.Component {
     }
 
     return (
-      <ListView />
+      <RootStack />
     );
   }
 }
