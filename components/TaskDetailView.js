@@ -1,47 +1,43 @@
 import React from 'react';
-import { Container, Header, Left, Body, Right, Content, Form, Item,
+import { Container, Header, Left, Body, Right, Content, List, ListItem,
   Input, Label, Icon, Button, Title, Text } from 'native-base';
 
 export default class TaskDetailView extends React.Component {
+  static navigationOptions = {
+      title: 'Detaljer',
+    };
+
   render() {
     return (
       <Container>
-        <Header>
-          <Left>
-            <Button transparent onPress={() =>
-              console.log("back")
-            }>
-              <Icon type="FontAwesome" name="angle-left" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Edit task</Title>
-          </Body>
-          <Right>
-            <Button transparent>
-              <Icon type="FontAwesome" name="refresh" style={{color: 'white'}} />
-            </Button>
-            <Button transparent>
-              <Icon type="FontAwesome" name="trash" style={{color: 'white'}} />
-            </Button>
-          </Right>
-        </Header>
         <Content>
-          <Form>
-            <Item>
+          <List>
+            <ListItem>
               <Input placeholder="Tittel" />
-            </Item>
-            <Item>
+            </ListItem>
+            <ListItem>
               <Input placeholder="Antall skritt" />
-            </Item>
-            <Item>
+            </ListItem>
+            <ListItem>
               <Input placeholder="Beskrivelse" />
-            </Item>
-          </Form>
+            </ListItem>
+            <ListItem>
+              <Text>4738 av 8000 skritt igjen</Text>
+            </ListItem>
+          </List>
+
           <Button block onPress={() =>
-            console.log("Form submitted")
+            this.props.navigation.navigate('Home')
           }>
             <Text>OK</Text>
+          </Button>
+
+          <Button block transparent>
+            <Icon type="FontAwesome" name="refresh" style={{color: 'black'}} />
+          </Button>
+
+          <Button block transparent>
+            <Icon type="FontAwesome" name="trash" style={{color: 'black'}} />
           </Button>
         </Content>
       </Container>

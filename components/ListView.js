@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import { Container, Content, Card, CardItem, Body, Text, Footer, Button } from 'native-base';
 export default class ListView extends Component {
+  static navigationOptions = {
+      title: 'Hjem',
+    };
 
   constructor(props) {
     super(props);
@@ -30,9 +33,8 @@ export default class ListView extends Component {
       });
     });
   }
-  
-  render() {
 
+  render() {
     var cards = [];
     this.state.items.forEach( function(item) {
      cards.push(
@@ -56,7 +58,7 @@ export default class ListView extends Component {
         <Content>{cards}</Content>
         <Footer>
           <Button transparent light
-            onPress={() => this.props.navigation.navigate('NewItem')}>
+            onPress={() => this.props.navigation.navigate('TaskDetailView')}>
             <Text>Opprett ny oppgave</Text>
           </Button>
         </Footer>

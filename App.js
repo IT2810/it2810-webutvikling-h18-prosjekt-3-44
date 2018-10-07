@@ -2,12 +2,12 @@ import React from 'react';
 import { AsyncStorage } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import ListView from './components/ListView';
-import NewItem from './components/NewItem';
+import TaskDetailView from './components/TaskDetailView';
 
 const RootStack = createStackNavigator(
 	{
 		Home: ListView,
-		NewItem: NewItem,
+		TaskDetailView: TaskDetailView,
 	},
 	{
 		initialRouteName: 'Home',
@@ -55,7 +55,7 @@ export default class App extends React.Component {
 		}
 		return
 	}
-		
+
 
   async componentWillMount() {
     await Expo.Font.loadAsync({
