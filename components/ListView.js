@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Container, Header, Content, Card, CardItem, Body, Text, Footer, Button } from 'native-base';
-export default class ListView extends Component {
+export default class ListView extends React.Component {
   render() {
     return (
       <Container>
