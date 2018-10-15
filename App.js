@@ -25,16 +25,13 @@ export default class App extends React.Component {
       task: "Dette må gjøres!",
       stepsTaken: 0,
       stepsGoal: 400,
-      startDate: new Date(),
+      startDate: new Date('2018-10-06T21:36:50.502Z'),
     };
     this._storeItem().then(() => {
       this._retrieveItem().then((item) => {
-        console.log("First test: " + JSON.stringify(item));
       }).catch((error) => {
-        console.log("Item retrieve error: " + error);
       });
     }).catch((error) => {
-      console.log("Item store error: " + error);
     });
   }
 
@@ -42,7 +39,6 @@ export default class App extends React.Component {
 		try {
 			await AsyncStorage.setItem(this.item.id, JSON.stringify(this.item));
 		} catch (error) {
-			console.log(error);
 		}
 	}
 
@@ -51,7 +47,7 @@ export default class App extends React.Component {
 			const value = await AsyncStorage.getItem(this.item.id);
 			return JSON.parse(value);
 		} catch (error) {
-			console.log(error.message);
+      //
 		}
 		return
 	}

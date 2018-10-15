@@ -1,7 +1,10 @@
 
 import React, { Component } from 'react';
+import { Pedometer } from 'expo';
 import { AsyncStorage } from 'react-native';
-import { Container, Content, Card, CardItem, Body, Text, Footer, Button } from 'native-base';
+import { Container, Content, Text, Footer, Button } from 'native-base';
+import TodoItem from './TodoItem';
+
 export default class ListView extends Component {
   static navigationOptions = {
       title: 'Hjem',
@@ -10,14 +13,34 @@ export default class ListView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [],
+      items: new Set(),
+      currentStepCount: 0,
     };
   }
 
   componentDidMount() {
+    this._subscribe();
     this.getAll();
   }
 
+  componentWillUnmount() {
+    // this._unsubscribe();
+  }
+
+  _subscribe = () => {
+    this._subscription = Pedometer.watchStepCount(result => {
+      if (result.steps === parseInt(result.steps, 10)) {
+        this.setState({
+          currentStepCount: result.steps
+        });
+      }
+    });
+  };
+  
+  _unsubscribe = () => {
+    this._subscription && this._subscription.remove();
+    this._subscription = null;
+  };
 
   async getAll() {
     AsyncStorage.getAllKeys((err, keys) => {
@@ -28,7 +51,7 @@ export default class ListView extends Component {
           fetchedItems.push(JSON.parse(value));
         });
         this.setState({
-          items: fetchedItems,
+          items: new Set(fetchedItems),
         });
       });
     });
@@ -36,22 +59,10 @@ export default class ListView extends Component {
 
   render() {
     var cards = [];
+    var stepcount = this.state.currentStepCount;
     this.state.items.forEach( function(item) {
-     cards.push(
-        <Card key={item.id}>
-          <CardItem header bordered>
-            <Text>{item.header}</Text>
-          </CardItem>
-          <CardItem>
-            <Body>
-              <Text>{item.task}</Text>
-            </Body>
-          </CardItem>
-          <CardItem footer>
-            <Text>Du har gått {item.stepsTaken} av {item.stepsGoal} skritt</Text>
-          </CardItem>
-        </Card>
-     );
+      item.stepsTaken += stepcount;
+      cards.push(<TodoItem key={item.id} item={item} />);
     });
     return (
       <Container>
