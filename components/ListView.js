@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { Pedometer } from 'expo';
 import { AsyncStorage } from 'react-native';
@@ -14,7 +13,7 @@ export default class ListView extends Component {
     super(props);
     this.state = {
       items: new Set(),
-      currentStepCount: 0,
+      stepsSinceLastUpdate: 0,
     };
   }
 
@@ -24,14 +23,14 @@ export default class ListView extends Component {
   }
 
   componentWillUnmount() {
-    // this._unsubscribe();
+    this._unsubscribe();
   }
 
   _subscribe = () => {
     this._subscription = Pedometer.watchStepCount(result => {
       if (result.steps === parseInt(result.steps, 10)) {
         this.setState({
-          currentStepCount: result.steps
+          stepsSinceLastUpdate: result.steps - this.state.stepsSinceLastUpdate
         });
       }
     });
@@ -42,7 +41,7 @@ export default class ListView extends Component {
     this._subscription = null;
   };
 
-  async getAll() {
+  getAll = async () => {
     AsyncStorage.getAllKeys((err, keys) => {
       AsyncStorage.multiGet(keys, (err, stores) => {
         var fetchedItems = [];
@@ -59,9 +58,9 @@ export default class ListView extends Component {
 
   render() {
     var cards = [];
-    var stepcount = this.state.currentStepCount;
+    var stepcount = this.state.stepsSinceLastUpdate;
     this.state.items.forEach( function(item) {
-      item.stepsTaken += stepcount;
+      item.stepTaken += stepcount;
       cards.push(<TodoItem key={item.id} item={item} />);
     });
     return (
@@ -69,7 +68,13 @@ export default class ListView extends Component {
         <Content>{cards}</Content>
         <Footer>
           <Button transparent light
-            onPress={() => this.props.navigation.navigate('TaskDetailView')}>
+            onPress={() => {
+              this.props.navigation.navigate('TaskDetailView', {
+                getAll: this.getAll
+              }
+              )
+            }
+            }>
             <Text>Opprett ny oppgave</Text>
           </Button>
         </Footer>

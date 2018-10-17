@@ -1,11 +1,76 @@
 import React from 'react';
-import { Container, Header, Left, Body, Right, Content, List, ListItem,
-  Input, Label, Icon, Button, Title, Text } from 'native-base';
+import {AsyncStorage } from 'react-native';
+import { Container, Content, List, ListItem, Input, Icon, Button, Text } from 'native-base';
 
 export default class TaskDetailView extends React.Component {
   static navigationOptions = {
       title: 'Detaljer',
     };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: "",
+      title: "",
+      stepTaken: 0,
+      stepGoal: 0,
+      description: "",
+    };
+  }
+
+  button_pressed = () => {
+
+    if (this.state.title.length < 1) {
+      // Error message, should be longer than one
+      return;
+    } else if (this.state.stepGoal < 1) {
+      // Error message, should be longer than one
+      return;
+    } else if (this.state.description.length < 1) {
+      // Error message, should be longer thann one
+      return;
+    }
+    let stateCopy = {
+      id: this.state.title + this.state.stepGoal,
+      title: this.state.title,
+      stepTaken: 0,
+      stepGoal: this.state.stepGoal,
+      description: this.state.description,
+    }
+    this._storeItem(stateCopy.id, stateCopy).then(() => {
+      const { params} = this.props.navigation.state;
+      params.getAll().then(() => {
+        this.props.navigation.navigate("Home");
+      }).catch((error) => {
+        // TODO: Handle error
+      });
+    }).catch((error) => {
+      // TODO: Handle error
+    });
+  }
+
+  _storeItem = async (id, item) => {
+		try {
+			await AsyncStorage.setItem(id, JSON.stringify(item));
+		} catch (error) {
+      // Todo: Handle error
+		}
+	}
+
+  handleTitleChange = (text) => {
+    console.log(text);
+    this.setState({title: text});
+  }
+
+  handleStepGoalChange = (text) => {
+    console.log(text);
+    this.setState({stepGoal: Number(text)});
+  }
+
+  handleDescriptionChange = (text) => {
+    this.setState({description: text});
+  }
+
 
   render() {
     return (
@@ -13,22 +78,17 @@ export default class TaskDetailView extends React.Component {
         <Content>
           <List>
             <ListItem>
-              <Input placeholder="Tittel" />
+              <Input placeholder="Tittel" type="text" value={this.state.title} onChangeText={this.handleTitleChange} />
             </ListItem>
             <ListItem>
-              <Input placeholder="Antall skritt" />
+              <Input type="number" keyboardType='numeric' value={this.state.stepGoal.toString()} onChangeText={this.handleStepGoalChange}/>
             </ListItem>
             <ListItem>
-              <Input placeholder="Beskrivelse" />
-            </ListItem>
-            <ListItem>
-              <Text>4738 av 8000 skritt igjen</Text>
+              <Input placeholder="Beskrivelse" type="text" value={this.state.description} onChangeText={this.handleDescriptionChange}/>
             </ListItem>
           </List>
 
-          <Button block onPress={() =>
-            this.props.navigation.navigate('Home')
-          }>
+          <Button block onPress={this.button_pressed}>
             <Text>OK</Text>
           </Button>
 
