@@ -16,15 +16,15 @@ export default class TodoItem extends Component {
     return (
       <Card>
         <CardItem header bordered>
-          <Text>{this.props.item.header}</Text>
+          <Text>{this.props.item.title}</Text>
         </CardItem>
         <CardItem>
           <Body>
-            <Text>{this.props.item.task}</Text>
+            <Text>{this.props.item.description}</Text>
           </Body>
         </CardItem>
         <CardItem footer>
-          <Text>Du har gått {this.props.item.stepsTaken} av {this.props.item.stepsGoal} skritt</Text>
+          <Text>Du har gått {this.props.item.stepTaken} av {this.props.item.stepGoal} skritt</Text>
         </CardItem>
       </Card>
     );

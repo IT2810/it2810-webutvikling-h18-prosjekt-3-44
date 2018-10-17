@@ -21,11 +21,10 @@ export default class App extends React.Component {
     this.state = { loading: true };
     this.item = {
       id: "1",
-      header: "En viktig oppgave",
-      task: "Dette må gjøres!",
-      stepsTaken: 0,
-      stepsGoal: 400,
-      startDate: new Date('2018-10-06T21:36:50.502Z'),
+      title: "En viktig oppgave",
+      description: "Dette må gjøres!",
+      stepTaken: 0,
+      stepGoal: 400,
     };
     this._storeItem().then(() => {
       this._retrieveItem().then((item) => {
