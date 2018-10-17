@@ -60,7 +60,14 @@ export default class ListView extends Component {
     var cards = [];
     var stepcount = this.state.stepsSinceLastUpdate;
     this.state.items.forEach( function(item) {
-      item.stepTaken += stepcount;
+      let stepTaken = stepcount + item.stepTaken;
+      if (item.stepGoal <= stepTaken) {
+        item.stepTaken = item.stepGoal;
+      } else {
+        item.stepTaken = stepTaken;
+      }
+
+      AsyncStorage.mergeItem(item.id, JSON.stringify({stepTaken: item.stepTaken}));
       cards.push(<TodoItem key={item.id} item={item} />);
     });
     return (

@@ -81,7 +81,7 @@ export default class TaskDetailView extends React.Component {
               <Input placeholder="Tittel" type="text" value={this.state.title} onChangeText={this.handleTitleChange} />
             </ListItem>
             <ListItem>
-              <Input type="number" keyboardType='numeric' value={this.state.stepGoal.toString()} onChangeText={this.handleStepGoalChange}/>
+              <Input placeholder="Antall skritt" type="number" keyboardType='numeric' value={this.state.stepGoal < 1 ? "" : this.state.stepGoal.toString()} onChangeText={this.handleStepGoalChange}/>
             </ListItem>
             <ListItem>
               <Input placeholder="Beskrivelse" type="text" value={this.state.description} onChangeText={this.handleDescriptionChange}/>
@@ -90,10 +90,6 @@ export default class TaskDetailView extends React.Component {
 
           <Button block onPress={this.button_pressed}>
             <Text>OK</Text>
-          </Button>
-
-          <Button block transparent>
-            <Icon type="FontAwesome" name="refresh" style={{color: 'black'}} />
           </Button>
 
           <Button block transparent>
