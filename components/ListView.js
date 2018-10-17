@@ -35,12 +35,13 @@ export default class ListView extends Component {
       }
     });
   };
-  
+
   _unsubscribe = () => {
     this._subscription && this._subscription.remove();
     this._subscription = null;
   };
 
+  // bla bla
   getAll = async () => {
     AsyncStorage.getAllKeys((err, keys) => {
       AsyncStorage.multiGet(keys, (err, stores) => {
@@ -56,6 +57,7 @@ export default class ListView extends Component {
     });
   }
 
+  // renders a list of cards with tasks and a button which can be pressed to create new tasks
   render() {
     var cards = [];
     var stepcount = this.state.stepsSinceLastUpdate;

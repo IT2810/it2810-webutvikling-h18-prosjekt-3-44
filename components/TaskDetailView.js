@@ -1,6 +1,6 @@
 import React from 'react';
 import {AsyncStorage } from 'react-native';
-import { Container, Content, List, ListItem, Input, Icon, Button, Text } from 'native-base';
+import { Container, Content, List, ListItem, Input, Button, Text } from 'native-base';
 
 export default class TaskDetailView extends React.Component {
   static navigationOptions = {
@@ -27,7 +27,7 @@ export default class TaskDetailView extends React.Component {
       // Error message, should be longer than one
       return;
     } else if (this.state.description.length < 1) {
-      // Error message, should be longer thann one
+      // Error message, should be longer than one
       return;
     }
     let stateCopy = {
@@ -42,10 +42,10 @@ export default class TaskDetailView extends React.Component {
       params.getAll().then(() => {
         this.props.navigation.navigate("Home");
       }).catch((error) => {
-        // TODO: Handle error
+        console.log(error)
       });
     }).catch((error) => {
-      // TODO: Handle error
+      console.log(error)
     });
   }
 
@@ -53,7 +53,7 @@ export default class TaskDetailView extends React.Component {
 		try {
 			await AsyncStorage.setItem(id, JSON.stringify(item));
 		} catch (error) {
-      // Todo: Handle error
+      console.log(error)
 		}
 	}
 
@@ -93,7 +93,11 @@ export default class TaskDetailView extends React.Component {
           </Button>
 
           <Button block transparent>
-            <Icon type="FontAwesome" name="trash" style={{color: 'black'}} />
+            <Text>Nullstill skritt</Text>
+          </Button>
+
+          <Button block transparent>
+            <Text>Slett oppgave</Text>
           </Button>
         </Content>
       </Container>
