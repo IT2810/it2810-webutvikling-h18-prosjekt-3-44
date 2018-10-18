@@ -23,10 +23,10 @@ export default class App extends React.Component {
   }
 
 	// load fonts and set loading to false when App is finnished loading
-  async UNSAFE_componentWillMount() {
+  async componentWillMount() {
     await Expo.Font.loadAsync({
-      Roboto: import("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: import("native-base/Fonts/Roboto_medium.ttf"),
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
     });
     this.setState({ loading: false });
   }

@@ -41,6 +41,12 @@ export default class ListView extends Component {
     this._subscription = null;
   };
 
+  completeItem = async (key) => {
+    AsyncStorage.removeItem(key).then(() => {
+      this.getAll();
+    });
+  }
+
   // bla bla
   getAll = async () => {
     AsyncStorage.getAllKeys((err, keys) => {
@@ -61,9 +67,16 @@ export default class ListView extends Component {
   render() {
     var cards = [];
     var stepcount = this.state.stepsSinceLastUpdate;
-    this.state.items.forEach( function(item) {
-      item.stepTaken += stepcount;
-      cards.push(<TodoItem key={item.id} item={item} />);
+    this.state.items.forEach((item) => {
+      let stepTaken = stepcount + item.stepTaken;
+      if (item.stepGoal <= stepTaken) {
+        item.stepTaken = item.stepGoal;
+      } else {
+        item.stepTaken = stepTaken;
+      }
+
+      AsyncStorage.mergeItem(item.id, JSON.stringify({stepTaken: item.stepTaken}));
+      cards.push(<TodoItem key={item.id} item={item} completeItem={this.completeItem} />);
     });
     return (
       <Container>
@@ -81,6 +94,6 @@ export default class ListView extends Component {
           </Button>
         </Footer>
       </Container>
-    );
+    )
   }
 }
