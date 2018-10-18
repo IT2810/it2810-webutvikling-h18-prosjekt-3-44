@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { Container, Content, Text, Footer, Button } from 'native-base';
 import TodoItem from './TodoItem';
-// import StepCounter from '../lib/StepCounter';
+import StepCounter from '../lib/StepCounter';
 import Database from '../lib/Database';
 
 export default class ListView extends Component {
   static navigationOptions = {
-      title: 'Hjem',
-    };
+    title: 'Hjem',
+  };
 
   constructor(props) {
     super(props);
-    // this.stepCounter = new StepCounter();
+    this.stepCounter = new StepCounter(this.getAll);
     this.state = {
       items: new Set(),
       stepsSinceLastUpdate: 0,
@@ -19,12 +19,12 @@ export default class ListView extends Component {
   }
 
   componentDidMount() {
-    // this.stepCounter.subscribe();
+    this.stepCounter.subscribe();
     this.getAll();
   }
 
   componentWillUnmount() {
-    // this.stepCounter.unsubscribe();
+    this.stepCounter.unsubscribe();
   }
 
 
