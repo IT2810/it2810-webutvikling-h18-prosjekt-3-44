@@ -1,15 +1,9 @@
 import React, { Component} from 'react';
-import { Card, CardItem, Body, Text } from 'native-base';
+import { Button, Card, CardItem, Body, Text } from 'native-base';
 
 export default class TodoItem extends Component {
   constructor(props) {
     super(props);
-  }
-
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
   }
 
   render() {
@@ -25,6 +19,15 @@ export default class TodoItem extends Component {
         </CardItem>
         <CardItem footer>
           <Text>Du har gått {this.props.item.stepTaken} av {this.props.item.stepGoal} skritt</Text>
+        </CardItem>
+        <CardItem>
+          <Button disabled={this.props.item.stepTaken !== this.props.item.stepGoal}
+            onPress={(() => {
+              this.props.completeItem(this.props.item.id);
+            })
+            }>
+            <Text>Fullfør</Text>
+          </Button>
         </CardItem>
       </Card>
     );
