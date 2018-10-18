@@ -1,5 +1,6 @@
 import React, { Component} from 'react';
 import { Button, Card, CardItem, Body, Text } from 'native-base';
+import Util from './Util';
 
 export default class TodoItem extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ export default class TodoItem extends Component {
           <Text>Du har gått {this.props.item.stepTaken} av {this.props.item.stepGoal} skritt</Text>
         </CardItem>
         <CardItem>
-          <Button disabled={this.props.item.stepTaken !== this.props.item.stepGoal}
+          <Button disabled={Util.stepsNotEqual(this.props.stepTaken, this.props.stepGoal)}
             onPress={(() => {
               this.props.completeItem(this.props.item.id);
             })
