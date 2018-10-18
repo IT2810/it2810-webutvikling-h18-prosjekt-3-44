@@ -33,6 +33,4 @@ export default class TodoItem extends Component {
       </Card>
     );
   }
-
-
 }

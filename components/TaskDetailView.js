@@ -1,5 +1,5 @@
 import React from 'react';
-import {AsyncStorage } from 'react-native';
+import Database from '../lib/Database';
 import { Container, Content, List, ListItem, Input, Button, Text } from 'native-base';
 
 export default class TaskDetailView extends React.Component {
@@ -37,7 +37,7 @@ export default class TaskDetailView extends React.Component {
       stepGoal: this.state.stepGoal,
       description: this.state.description,
     }
-    this._storeItem(stateCopy.id, stateCopy).then(() => {
+    Database.storeItem(stateCopy.id, stateCopy).then(() => {
       const { params} = this.props.navigation.state;
       params.getAll().then(() => {
         this.props.navigation.navigate("Home");
@@ -49,13 +49,6 @@ export default class TaskDetailView extends React.Component {
     });
   }
 
-  _storeItem = async (id, item) => {
-		try {
-			await AsyncStorage.setItem(id, JSON.stringify(item));
-		} catch (error) {
-      console.log(error)
-		}
-	}
 
   handleTitleChange = (text) => {
     console.log(text);
