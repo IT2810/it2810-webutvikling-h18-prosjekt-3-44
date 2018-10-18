@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Pedometer } from 'expo';
-import { AsyncStorage } from 'react-native';
 import { Container, Content, Text, Footer, Button } from 'native-base';
 import TodoItem from './TodoItem';
+// import StepCounter from '../lib/StepCounter';
+import Database from '../lib/Database';
 
 export default class ListView extends Component {
   static navigationOptions = {
@@ -11,6 +11,7 @@ export default class ListView extends Component {
 
   constructor(props) {
     super(props);
+    // this.stepCounter = new StepCounter();
     this.state = {
       items: new Set(),
       stepsSinceLastUpdate: 0,
@@ -18,64 +19,38 @@ export default class ListView extends Component {
   }
 
   componentDidMount() {
-    this._subscribe();
+    // this.stepCounter.subscribe();
     this.getAll();
   }
 
   componentWillUnmount() {
-    this._unsubscribe();
+    // this.stepCounter.unsubscribe();
   }
 
-  _subscribe = () => {
-    this._subscription = Pedometer.watchStepCount(result => {
-      if (result.steps === parseInt(result.steps, 10)) {
-        this.setState({
-          stepsSinceLastUpdate: result.steps - this.state.stepsSinceLastUpdate
-        });
-      }
-    });
-  };
-
-  _unsubscribe = () => {
-    this._subscription && this._subscription.remove();
-    this._subscription = null;
-  };
 
   completeItem = async (key) => {
-    AsyncStorage.removeItem(key).then(() => {
+    Database.removeItem(key).then(() => {
       this.getAll();
+    }).catch((error) => {
+      console.log(error);
     });
   }
 
   // bla bla
   getAll = async () => {
-    AsyncStorage.getAllKeys((err, keys) => {
-      AsyncStorage.multiGet(keys, (err, stores) => {
-        var fetchedItems = [];
-        stores.map((result, i, store) => {
-          let value = store[i][1];
-          fetchedItems.push(JSON.parse(value));
-        });
-        this.setState({
-          items: new Set(fetchedItems),
-        });
+    Database.getAllItems().then((fetchedItems) => {
+      this.setState({
+        items: new Set(fetchedItems),
       });
+    }).catch((error) => {
+      console.log(error)
     });
   }
 
   // renders a list of cards with tasks and a button which can be pressed to create new tasks
   render() {
     var cards = [];
-    var stepcount = this.state.stepsSinceLastUpdate;
     this.state.items.forEach((item) => {
-      let stepTaken = stepcount + item.stepTaken;
-      if (item.stepGoal <= stepTaken) {
-        item.stepTaken = item.stepGoal;
-      } else {
-        item.stepTaken = stepTaken;
-      }
-
-      AsyncStorage.mergeItem(item.id, JSON.stringify({stepTaken: item.stepTaken}));
       cards.push(<TodoItem key={item.id} item={item} completeItem={this.completeItem} />);
     });
     return (
@@ -86,8 +61,7 @@ export default class ListView extends Component {
             onPress={() => {
               this.props.navigation.navigate('TaskDetailView', {
                 getAll: this.getAll
-              }
-              )
+              })
             }
             }>
             <Text>Opprett ny oppgave</Text>
