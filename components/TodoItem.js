@@ -2,6 +2,7 @@ import React, { Component} from 'react';
 import { Button, Card, CardItem, Body, Text } from 'native-base';
 import Util from './Util';
 
+// Component for the TODO-item 
 export default class TodoItem extends Component {
   constructor(props) {
     super(props);

@@ -2,6 +2,7 @@ import React from 'react';
 import Database from '../lib/Database';
 import { Container, Content, List, ListItem, Input, Button, Text } from 'native-base';
 
+// Component for creating new tasks
 export default class TaskDetailView extends React.Component {
   static navigationOptions = {
       title: 'Detaljer',
@@ -21,13 +22,13 @@ export default class TaskDetailView extends React.Component {
   button_pressed = () => {
 
     if (this.state.title.length < 1) {
-      // Error message, should be longer than one
+      // Title should be longer than one, do nothing
       return;
     } else if (this.state.stepGoal < 1) {
-      // Error message, should be longer than one
+      // Step goal should be longer than one, do nothing
       return;
     } else if (this.state.description.length < 1) {
-      // Error message, should be longer than one
+      // Description should be longer than one, do nothing
       return;
     }
     let stateCopy = {
@@ -64,33 +65,34 @@ export default class TaskDetailView extends React.Component {
     this.setState({description: text});
   }
 
-
   render() {
     return (
       <Container>
         <Content>
           <List>
             <ListItem>
-              <Input placeholder="Tittel" type="text" value={this.state.title} onChangeText={this.handleTitleChange} />
+              <Input placeholder="Tittel"
+                     type="text"
+                     value={this.state.title}
+                     onChangeText={this.handleTitleChange} />
             </ListItem>
             <ListItem>
-              <Input placeholder="Antall skritt" type="number" keyboardType='numeric' value={this.state.stepGoal < 1 ? "" : this.state.stepGoal.toString()} onChangeText={this.handleStepGoalChange}/>
+              <Input placeholder="Antall skritt"
+                     type="number" 
+                     keyboardType='numeric'
+                     value={this.state.stepGoal < 1 ? "" : this.state.stepGoal.toString()}
+                     onChangeText={this.handleStepGoalChange}/>
             </ListItem>
             <ListItem>
-              <Input placeholder="Beskrivelse" type="text" value={this.state.description} onChangeText={this.handleDescriptionChange}/>
+              <Input placeholder="Beskrivelse"
+                     type="text"
+                     value={this.state.description} 
+                     onChangeText={this.handleDescriptionChange}/>
             </ListItem>
           </List>
 
           <Button block onPress={this.button_pressed}>
             <Text>OK</Text>
-          </Button>
-
-          <Button block transparent>
-            <Text>Nullstill skritt</Text>
-          </Button>
-
-          <Button block transparent>
-            <Text>Slett oppgave</Text>
           </Button>
         </Content>
       </Container>

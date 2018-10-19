@@ -4,6 +4,7 @@ import TodoItem from './TodoItem';
 import StepCounter from '../lib/StepCounter';
 import Database from '../lib/Database';
 
+// Component for listing all the TODO-Items
 export default class ListView extends Component {
   static navigationOptions = {
     title: 'Hjem',
@@ -14,20 +15,24 @@ export default class ListView extends Component {
     this.stepCounter = new StepCounter(this.getAll);
     this.state = {
       items: new Set(),
-      stepsSinceLastUpdate: 0,
     };
   }
-
+  
+  // Subscribe to the step counter and
+  // get all the Items from AsyncStorage
   componentDidMount() {
     this.stepCounter.subscribe();
     this.getAll();
   }
-
+  
+  // Unsubscribe from the step counter
   componentWillUnmount() {
     this.stepCounter.unsubscribe();
   }
 
-
+  // Function passed to all the TodoItems
+  // Is called when the complete button is pressed.
+  // Removes the TodoItem from the database and update state
   completeItem = async (key) => {
     Database.removeItem(key).then(() => {
       this.getAll();
@@ -36,7 +41,8 @@ export default class ListView extends Component {
     });
   }
 
-  // bla bla
+  // Get all TodoItems from the database and
+  // update State
   getAll = async () => {
     Database.getAllItems().then((fetchedItems) => {
       this.setState({
@@ -47,7 +53,7 @@ export default class ListView extends Component {
     });
   }
 
-  // renders a list of cards with tasks and a button which can be pressed to create new tasks
+  // Renders a list of cards with tasks and a button which can be pressed to create new tasks
   render() {
     var cards = [];
     this.state.items.forEach((item) => {
