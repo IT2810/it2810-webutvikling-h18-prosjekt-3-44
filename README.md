@@ -9,9 +9,9 @@ Venstre mockup viser det vi kaller *ListView*, en liste over oppgaver og hvor ma
 
 I høyre mockup ser man det vi kaller *TaskDetailView*. Her kan man opprette en ny oppgave eller endre en som allerede eksisterer, avhengig av hva man trykte på i ListView. Man kan legge til en tittel, antall skritt man har på seg før oppgaven skal være fullført og en beskrivelse. Dessuten kan man slette oppgaven eller nullstille antall skritt som er blitt gått for oppgaven.
 
-Designet til den ferdige appen var stort sett lik mockupen, med noen små endringer for TaskDetailView. Isteden for ikoner øverst for å nullstille skritt og fjerne en oppgave, så laget vi noen knapper med tekst nederst på skjermen.
+Designet til den ferdige appen ble veldig lik mockupen, men med noen endringer både for ListView og TaskDetailView. Endringer på ListView var posisjonering av tekst og at det endelige designet inkluderer en knapp som lar brukeren trykke på at oppgaven er fullført. Noen endringer for TaskDetailView er at istedet for ikoner øverst for å nullstille skritt og fjerne en oppgave, så laget vi noen knapper med tekst nederst på skjermen.
 
-## Tredjeparts-biblioteker
+## Biblioteker
 ### React Navigation
 For å implementere en pen og enkel navigering mellom skjermene valgte vi å benytte oss av *React Navigation* fra https://reactnavigation.org/en/.
 
@@ -59,8 +59,7 @@ Fontene lastes inn asynkront og loading settes til false når de er lastet:
 async componentWillMount() {
     await Expo.Font.loadAsync({
       Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-      Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
     });
     this.setState({ loading: false });
   }
@@ -80,3 +79,48 @@ async componentWillMount() {
   ```
   
   Les mer om hvordan man kommer i gang med NativeBase [her](https://docs.nativebase.io/docs/GetStarted.html).
+  
+  ### AsyncStorage
+  AsyncStorage er et enkelt bibliotek for asynkron, permanent lagring av tilstand, slik at man kan lagre data selv når appen avsluttes.
+  
+  På iOS er AsyncStorage implementert med iOS-spesifikk kode som lagrer små verdier i en serialisert *dictionary* og større verdier i separate filer. På Android brukes enten RocksDB eller SQLite, avhengig av hva som er tilgjengelig.
+  
+  AsyncStorage importeres på følgende måte:
+  ```javascript
+  import { AsyncStorage } from "react-native"
+  ```
+  
+Eksempel på lagring av data:
+```javascript
+_lagreData = async () => {
+  try {
+    await AsyncStorage.setItem('@MySuperStore:key', 'Data jeg ønsker å lagre');
+  } catch (error) {
+    // Noe gikk galt ved lagring av data
+  }
+}
+```
+
+Eksempel på henting av data:
+```javascript
+_hentData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('TASKS');
+    if (value !== null) {
+      console.log(value);
+    }
+   } catch (error) {
+     // Noe gikk galt ved henting av data
+   }
+}
+```
+Les mer om hvordan man kommer i gang med AsyncStorage [her](https://facebook.github.io/react-native/docs/asyncstorage).
+
+### Pedometer
+Pedometer er et bibliotek fra [Expo](https://docs.expo.io/versions/latest/sdk/pedometer) som brukes for å kommunisere med mobilens skritteller. Biblioteket fungerer for både Android og iOS.
+
+## Testing
+Litt om testing her
+
+## Samarbeid og bruk av Git
+Vi har vært en gruppe på 2 personer. Til å begynne med delte vi prosjektet inn i ulike deler og opprettet issues for disse.
