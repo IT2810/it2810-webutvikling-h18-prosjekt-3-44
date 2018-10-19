@@ -52,12 +52,10 @@ export default class TaskDetailView extends React.Component {
 
 
   handleTitleChange = (text) => {
-    console.log(text);
     this.setState({title: text});
   }
 
   handleStepGoalChange = (text) => {
-    console.log(text);
     this.setState({stepGoal: Number(text)});
   }
 

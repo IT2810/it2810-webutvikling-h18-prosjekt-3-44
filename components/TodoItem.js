@@ -23,7 +23,7 @@ export default class TodoItem extends Component {
           <Text>Du har gått {this.props.item.stepTaken} av {this.props.item.stepGoal} skritt</Text>
         </CardItem>
         <CardItem>
-          <Button disabled={Util.stepsNotEqual(this.props.stepTaken, this.props.stepGoal)}
+          <Button disabled={Util.stepsNotEqual(this.props.item.stepTaken, this.props.item.stepGoal)}
             onPress={(() => {
               this.props.completeItem(this.props.item.id);
             })
