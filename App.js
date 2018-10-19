@@ -4,7 +4,7 @@ import { createStackNavigator } from 'react-navigation';
 import ListView from './components/ListView';
 import TaskDetailView from './components/TaskDetailView';
 
-// stack
+// RootStack for the Navigation bar
 const RootStack = createStackNavigator(
 	{
 		Home: ListView,
@@ -31,7 +31,6 @@ export default class App extends React.Component {
     this.setState({ loading: false });
   }
 
-	// render screen
   render() {
     if (this.state.loading) {
       return <Expo.AppLoading />;
