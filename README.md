@@ -83,7 +83,9 @@ async componentWillMount() {
   ### AsyncStorage
   AsyncStorage er et enkelt bibliotek for asynkron, permanent lagring av tilstand, slik at man kan lagre data selv når appen avsluttes.
   
-  På iOS er AsyncStorage implementert med iOS-spesifikk kode som lagrer små verdier i en serialisert *dictionary* og større verdier i separate filer. På Android brukes enten RocksDB eller SQLite, avhengig av hva som er tilgjengelig.
+  På iOS er AsyncStorage implementert med iOS-spesifikk kode som lagrer små verdier i en serialisert *key-value storage* og større verdier i separate filer. På Android brukes enten RocksDB eller SQLite, avhengig av hva som er tilgjengelig.
+
+Alle funksjoner i AsyncStorage API returnerer et Promise objekt.
   
   AsyncStorage importeres på følgende måte:
   ```javascript
@@ -117,7 +119,22 @@ _hentData = async () => {
 Les mer om hvordan man kommer i gang med AsyncStorage [her](https://facebook.github.io/react-native/docs/asyncstorage).
 
 ### Pedometer
-Pedometer er et bibliotek fra [Expo](https://docs.expo.io/versions/latest/sdk/pedometer) som brukes for å kommunisere med mobilens skritteller. Biblioteket fungerer for både Android og iOS.
+Pedometer er et bibliotek fra [Expo](https://docs.expo.io/versions/latest/sdk/pedometer) som brukes for å kommunisere med mobilens skritteller.
+Biblioteket fungerer for både Android og iOS og benytter seg av API til User Core Motion for iOS og Google Fit for Android.
+
+Antall skritt hentes ut ved at man sender med en funksjon som callback når registrere seg på tjenesten.
+Callbackfunksjonen kalles hver gang Expo Pedometer oppdateres fra User Core Motion eller Google Fit.
+
+``` javascript
+subscribe = () => {                                                                                                                                                                                                                                    
+  this._subscription = Pedometer.watchStepCount(result => {                                                                                                                                                                                            
+    if (result.steps === parseInt(result.steps, 10)) {                                                                                                                                                                                                 
+      this.updateSteps(result.steps);                                                                                                                                                                                                                  
+    }                                                                                                                                                                                                                                                  
+  });                                                                                                                                                                                                                                                  
+};
+```
+
 
 ## Testing
 Litt om testing her
