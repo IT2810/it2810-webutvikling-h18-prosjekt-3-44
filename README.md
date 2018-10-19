@@ -1,7 +1,18 @@
 # TODO Walk
+[Introduksjon]
+
+## Samarbeid og bruk av Git
+Vi har vært en gruppe på 2 personer. Til å begynne med delte vi prosjektet inn i ulike deler og opprettet issues for disse med en kort beskrivelse. Noen a disse var å lage en mockup av appen, lage statiske layouter av ulike skjermbilder som senere kunne bli implementert, implementere AsyncStorage, navigasjon, implementere skritteller osv.
+
+Til å begynne med opprettet vi en mockup. Etter å ha fått opp denne tok en person ansvar for å lage det statiske designet og sette i gang med testing, mens den andre fikk implementert navigasjon, satt opp asyncstorage og fant et bibliotek for bruk av skritteller og fikk implementert dette.
+
+Selv om arbeidsoppgavene var vel definerte har prosjektet krevd tett samarbeid, der vi har utvekslet kunnskap og ideer om bibliotekene og teknologien vi har benyttet. Vi har også parprogrammert litt for å løse noen av de mer komplekse utfordringene. F.eks ved implementering av AsyncStorage.
+
+### Issues og commits
+Hver issue som opprettes i Github har en egen ID. Commits som bidrar eller løser en spesiell issue har fått ID'n til issuen først i commit-meldingen. Mindre commits som ikke er koblet direkte til en issue på denne måten, har bare blitt commitet uten å være linket til en issue. F.eks oppdateringer av README og lignende.
 
 ## Mockup
-Det første vi gjorde i prosjektet etter at vi hadde en idé, var å lage en mockup av hvordan designet kunne se ut. På den måten fikk vi en oversikt over hva som måtte gjøres. Vi kom frem til at vi hadde behov for to ulike skjermbilder.
+Etter at vi hadde en idé var det første vi gjorde å lage en mockup av hvordan designet kunne se ut. På den måten fikk vi en oversikt over hva som måtte gjøres. Vi kom frem til at vi hadde behov for to ulike skjermbilder.
 
 ![Mockup](assets/mockup/mockup.png?raw=true "Mockup of the app")
 
@@ -138,6 +149,3 @@ subscribe = () => {
 
 ## Testing
 Litt om testing her
-
-## Samarbeid og bruk av Git
-Vi har vært en gruppe på 2 personer. Til å begynne med delte vi prosjektet inn i ulike deler og opprettet issues for disse.
