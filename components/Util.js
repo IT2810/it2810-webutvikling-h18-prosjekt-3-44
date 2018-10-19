@@ -1,10 +1,8 @@
 
-export function stepsNotEqual(stepTaken, goal) {
-  if(this.props.item.stepTaken !== this.props.item.stepGoal) {
+export function stepsNotEqual(stepsTaken, goal) {
+  if(stepsTaken !== goal) {
     return true;
   } else {
     return false;
   }
 }
-
-this.props.item.stepTaken !== this.props.item.stepGoal
