@@ -1,5 +1,6 @@
 import React from 'react';
 import Database from '../lib/Database';
+import { Alert } from 'react-native';
 import { Container, Content, List, ListItem, Input, Button, Text } from 'native-base';
 
 // Component for creating new tasks
@@ -19,16 +20,30 @@ export default class TaskDetailView extends React.Component {
     };
   }
 
+
+  inputAlert = (title, message) => {
+    Alert.alert(
+      title,
+      message,
+      [
+        {text: 'OK' }
+      ]
+    )
+  }
+
   button_pressed = () => {
 
     if (this.state.title.length < 1) {
       // Title should be longer than one, do nothing
+      this.inputAlert('Title to short', 'Title must be more than one character');
       return;
     } else if (this.state.stepGoal < 1) {
       // Step goal should be longer than one, do nothing
+      this.inputAlert('Step goal to low', 'Step goal is to low, get out and move!');
       return;
     } else if (this.state.description.length < 1) {
       // Description should be longer than one, do nothing
+      this.inputAlert('Descripton is to short', 'Description must be more than one character');
       return;
     }
     let stateCopy = {
