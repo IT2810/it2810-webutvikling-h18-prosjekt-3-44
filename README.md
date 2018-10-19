@@ -1,5 +1,5 @@
 # TODO Walk
-[Introduksjon]
+TODO Walk er en app der man kan lage oppgaver med et antall skritt man har på seg før oppgaven skal være gjort. Når oppgaven er fullført kan man bekrefte at oppgaven er fullført og den blir da slettet.
 
 ## Samarbeid og bruk av Git
 Vi har vært en gruppe på 2 personer. Til å begynne med delte vi prosjektet inn i ulike deler og opprettet issues for disse med en kort beskrivelse. Noen a disse var å lage en mockup av appen, lage statiske layouter av ulike skjermbilder som senere kunne bli implementert, implementere AsyncStorage, navigasjon, implementere skritteller osv.
@@ -21,6 +21,8 @@ Venstre mockup viser det vi kaller *ListView*, en liste over oppgaver og hvor ma
 I høyre mockup ser man det vi kaller *TaskDetailView*. Her kan man opprette en ny oppgave eller endre en som allerede eksisterer, avhengig av hva man trykte på i ListView. Man kan legge til en tittel, antall skritt man har på seg før oppgaven skal være fullført og en beskrivelse. Dessuten kan man slette oppgaven eller nullstille antall skritt som er blitt gått for oppgaven.
 
 Designet til den ferdige appen ble veldig lik mockupen, men med noen endringer både for ListView og TaskDetailView. Endringer på ListView var posisjonering av tekst og at det endelige designet inkluderer en knapp som lar brukeren trykke på at oppgaven er fullført. Noen endringer for TaskDetailView er at istedet for ikoner øverst for å nullstille skritt og fjerne en oppgave, så laget vi noen knapper med tekst nederst på skjermen.
+
+Andre endringer som ikke ble med i den ferdige appen var at vi unnlot å implementere funksjonalitet for å nullstille skritt og å slette en oppgave før den er fullført.
 
 ## Biblioteker
 ### React Navigation
@@ -148,4 +150,66 @@ subscribe = () => {
 
 
 ## Testing
-Litt om testing her
+For å teste appen har vi brukt [Jest](https://jestjs.io).
+
+I utils-test.js tester vi utils-funksjonen stepsNotEqual, en funksjon som returnerer true dersom dens to argumenter er ulik, og false dersom de er like.
+
+Testene kjøres med `jest` i terminalen. Noe vi har gjort ved jevne mellomrom for å kontrollere at skritt regnes ut som de skal.
+
+Vi har dessuten gjort utallige forsøk på å få til snapshot-testing og testing av AsyncStorage ved bruk av en mock fra https://github.com/devmetal/mock-async-storage, men den samme feilmeldingen fra Jest har gjort at vi ikke har kommet noen vei. Flere grupper har hatt problemer med den samme feilen og vi har ikke hørt at noen har funnet ut hva feilmeldingen skyldes.
+
+Vi har forsøkt å teste snapshots på følgende måte:
+```javascript
+import React from 'react';
+import ListView from '../components/ListView';
+import { Container, Content, Text, Footer, Button } from 'native-base';
+
+import renderer from 'react-test-renderer';
+
+jest.mock("native-base", () => {});
+
+test('renders correctly', () => {
+  const tree = renderer.create(<ListView />).toJSON();
+  expect(tree).toMatchSnapshot();
+});
+```
+
+Vi har forsøkt å lagring og henting med AsyncStorage på følgende måte:
+```javascript
+import 'react-native';
+import MockAsyncStorage from 'mock-async-storage'
+import React from 'react';
+import ListView from '../components/ListView';
+
+// Note: test renderer must be required after react-native.
+import renderer from 'react-test-renderer';
+
+const mock = () => {
+  const mockImpl = new MockAsyncStorage()
+  jest.mock('AsyncStorage', () => mockImpl)
+}
+
+mock();
+
+jest.mock("native-base", () => {});
+
+import { AsyncStorage as storage } from 'react-native'
+
+it('renders correctly', () => {
+  const tree = renderer.create(
+    <ListView />
+  );
+});
+
+it('Mock Async Storage working', async () => {
+  await storage.setItem('myKey', 'myValue')
+  const value = await storage.getItem('myKey')
+  expect(value).toBe('myValue')
+})
+```
+
+Jest gir en feilmelding om at den ikke klarer finne komponenter som rendres i komponenter vi forsøker å teste. Vi har forsøkt å mocke disse komponentene, men heller ikke det fungerte. Feilmeldingen ser dere under.
+
+![Feilmelding](https://image.ibb.co/nDDSWL/feilmelding.png "Feilmelding")
+
+Det kunne vært interessant å se om Enzyme var enklere å jobbe med, eller om problemene med Jest har en enkel forklaring.
